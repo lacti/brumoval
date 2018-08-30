@@ -1,41 +1,59 @@
 import * as R from 'rambda';
 import * as React from 'react';
-import { Slot } from './Slot';
+import { IBoardSlotState, IBoardState } from '../store/state';
 
-interface IBoardProps {
-  count: number;
-}
-
-export const Board: React.SFC<IBoardProps> = ({ count }) => (
-  <table className="Board">
-    <tbody>
-      <tr>
-        {R.range(0, count + 2).map(col => (
-          <td key={`r0c${col}`}>
-            <Slot key={col} index={col} />
-          </td>
-        ))}
-      </tr>
-      {R.range(0, count).map(row => (
-        <tr key={`r${1 + row}`}>
-          <td key={`r${1 + row}c0`}>
-            <Slot key={row} index={count * count - row - 2} />
-          </td>
-          {R.range(0, count).map(col => (
-            <td key={`r${1 + row}c${1 + col}`} />
-          ))}
-          <td key={`r${1 + row}c${count + 1}`}>
-            <Slot key={row} index={count + row + 2} />
-          </td>
-        </tr>
-      ))}
-      <tr>
-        {R.range(0, count + 2).map(col => (
-          <td key={`r${1 + count}c${col}`}>
-            <Slot key={col} index={count + count + 1 + count + 2 - col} />
-          </td>
-        ))}
-      </tr>
-    </tbody>
-  </table>
+const Slot: React.StatelessComponent<{ slot: IBoardSlotState }> = ({
+  slot,
+}) => (
+  <div className="Slot">
+    {slot.player && (
+      <div className="Character">
+        <span>{slot.player.name}</span>
+        <br />
+        <img src={slot.player.asset as any} />
+      </div>
+    )}
+  </div>
 );
+
+export const Board: React.StatelessComponent<{ board: IBoardState }> = ({
+  board,
+}) => {
+  const { slots, length } = board;
+  return (
+    <table className="Board">
+      <tbody>
+        <tr>
+          {R.range(0, length + 2).map(col => (
+            <td key={`r0c${col}`}>
+              <Slot key={col} slot={slots[col]} />
+            </td>
+          ))}
+        </tr>
+        {R.range(0, length).map(row => (
+          <tr key={`r${1 + row}`}>
+            <td key={`r${1 + row}c0`}>
+              <Slot key={row} slot={slots[length * length - row - 2]} />
+            </td>
+            {R.range(0, length).map(col => (
+              <td key={`r${1 + row}c${1 + col}`} />
+            ))}
+            <td key={`r${1 + row}c${length + 1}`}>
+              <Slot key={row} slot={slots[length + row + 2]} />
+            </td>
+          </tr>
+        ))}
+        <tr>
+          {R.range(0, length + 2).map(col => (
+            <td key={`r${1 + length}c${col}`}>
+              <Slot
+                key={col}
+                slot={slots[length + length + 1 + length + 2 - col]}
+              />
+            </td>
+          ))}
+        </tr>
+      </tbody>
+    </table>
+  );
+};

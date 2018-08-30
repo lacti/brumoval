@@ -8,16 +8,65 @@
 }
 
 .Board {
-  margin: auto;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+.Board,
+.Board td,
+.Board tr,
+.Board th {
+  margin: 0;
+  padding: 0;
 }
 
 .Slot {
-  width: 4rem;
-  height: 4rem;
+  width: 85px;
+  height: 85px;
   background: #cccccc;
   user-select: none;
   cursor: pointer;
-  vertical-align: middle;
   text-align: center;
-  display: inline-block;
+}
+
+.Profiles {
+  width: 100%;
+  margin-bottom: 1px;
+}
+.Profile {
+  float: left;
+  width: 5rem;
+  background: tan;
+  text-align: center;
+  margin-right: 1px;
+}
+.Profile .Hp {
+  background-color: black;
+}
+.Profile .Hp span {
+  height: 4px;
+  background-color: red;
+}
+.Profile img {
+  width: 5rem;
+  height: 5rem;
+}
+.Profile span {
+  display: block;
+  font-size: 0.7rem;
+}
+
+img {
+  margin: 0;
+  padding: 0;
+}
+
+.Character {
+  padding-top: 8px;
+}
+.Character span {
+  font-size: 0.7rem;
+}
+.Character img {
+  width: 48px;
+  height: 48px;
 }
