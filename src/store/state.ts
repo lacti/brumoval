@@ -1,4 +1,7 @@
 import ImageOfPlayerTypeA from '../images/player/type-a.png';
+import ImageOfPlayerTypeB from '../images/player/type-b.png';
+import ImageOfPlayerTypeC from '../images/player/type-c.png';
+import ImageOfPlayerTypeD from '../images/player/type-d.png';
 
 export enum ItemAsset {
   BlackBean = 'black-bean.png',
@@ -15,6 +18,9 @@ export interface IInventoryState {
 
 export enum PlayerAsset {
   TypeA = ImageOfPlayerTypeA,
+  TypeB = ImageOfPlayerTypeB,
+  TypeC = ImageOfPlayerTypeC,
+  TypeD = ImageOfPlayerTypeD,
 }
 
 export interface IPlayerState {
@@ -22,11 +28,12 @@ export interface IPlayerState {
   asset: PlayerAsset;
   hp: number;
   money?: number;
+  position: number;
 }
 
 export interface IBoardSlotState {
   index: number;
-  player?: IPlayerState;
+  players: IPlayerState[];
 }
 
 export interface IBoardState {

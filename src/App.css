@@ -24,7 +24,6 @@
   height: 85px;
   background: #cccccc;
   user-select: none;
-  cursor: pointer;
   text-align: center;
 }
 
@@ -35,7 +34,6 @@
 .Profile {
   float: left;
   width: 5rem;
-  background: tan;
   text-align: center;
   margin-right: 1px;
 }
@@ -53,6 +51,7 @@
 .Profile span {
   display: block;
   font-size: 0.7rem;
+  background: whitesmoke;
 }
 
 img {
@@ -60,13 +59,11 @@ img {
   padding: 0;
 }
 
+.Players {
+  padding-top: 10px;
+}
 .Character {
-  padding-top: 8px;
-}
-.Character span {
-  font-size: 0.7rem;
-}
-.Character img {
-  width: 48px;
-  height: 48px;
+  width: 24px;
+  height: 24px;
+  margin: 4px 4px 0px 4px;
 }

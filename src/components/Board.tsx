@@ -6,13 +6,15 @@ const Slot: React.StatelessComponent<{ slot: IBoardSlotState }> = ({
   slot,
 }) => (
   <div className="Slot">
-    {slot.player && (
-      <div className="Character">
-        <span>{slot.player.name}</span>
-        <br />
-        <img src={slot.player.asset as any} />
-      </div>
-    )}
+    <div className="Players">
+      {slot.players.map(player => (
+        <img
+          className="Character"
+          key={player.name}
+          src={player.asset as any}
+        />
+      ))}
+    </div>
   </div>
 );
 

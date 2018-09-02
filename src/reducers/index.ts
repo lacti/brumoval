@@ -1,5 +1,6 @@
 import * as R from 'rambda';
 import { combineReducers } from 'redux';
+import { NAMES } from '../models/constants';
 import {
   IBoardSlotState,
   IBoardState,
@@ -8,19 +9,49 @@ import {
   IProfilesState,
   PlayerAsset,
 } from '../store/state';
+import { nextElement } from '../utils/rand';
 
+const player1 = {
+  asset: PlayerAsset.TypeA,
+  hp: 80,
+  money: 500,
+  name: '김복치',
+  position: 0,
+};
+const player2 = {
+  asset: PlayerAsset.TypeB,
+  hp: 50,
+  money: 100,
+  name: '고복치',
+  position: 0,
+};
+const player3 = {
+  asset: PlayerAsset.TypeC,
+  hp: 10,
+  money: 300,
+  name: '최복치',
+  position: 0,
+};
+const player4 = {
+  asset: PlayerAsset.TypeD,
+  hp: 90,
+  money: 1000,
+  name: '장복치',
+  position: 0,
+};
 const createSlots = (length: number): IBoardSlotState[] =>
   R.range(0, length * 4 + 4).map(index => ({
     index,
-    player:
-      Math.random() > 0.7
-        ? {
-            asset: PlayerAsset.TypeA,
-            hp: 80,
-            money: 500,
-            name: '김복치',
-          }
-        : undefined,
+    players:
+      index === 0
+        ? [player1]
+        : index === 1
+          ? [player2]
+          : index === 2
+            ? [player3]
+            : index === 3
+              ? [player4]
+              : [],
   }));
 
 const board = (
@@ -39,32 +70,30 @@ const profiles = (
       asset: PlayerAsset.TypeA,
       hp: 80,
       money: 500,
-      name: '김복치',
+      name: nextElement(NAMES),
+      position: 0,
     },
     others: [
       {
-        asset: PlayerAsset.TypeA,
+        asset: PlayerAsset.TypeB,
         hp: 50,
         money: 100,
-        name: '고복치',
+        name: nextElement(NAMES),
+        position: 0,
       },
       {
-        asset: PlayerAsset.TypeA,
+        asset: PlayerAsset.TypeC,
         hp: 10,
         money: 300,
-        name: '최복치',
+        name: nextElement(NAMES),
+        position: 0,
       },
       {
-        asset: PlayerAsset.TypeA,
+        asset: PlayerAsset.TypeD,
         hp: 90,
         money: 1000,
-        name: '장복치',
-      },
-      {
-        asset: PlayerAsset.TypeA,
-        hp: 30,
-        money: 50,
-        name: '이복치',
+        name: nextElement(NAMES),
+        position: 0,
       },
     ],
   },
