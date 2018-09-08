@@ -7,9 +7,11 @@ import {
   IGameState,
   IInventoryState,
   IProfilesState,
+  IRootState,
   PlayerAsset,
 } from '../store/state';
 import { nextElement } from '../utils/rand';
+import session from './session';
 
 const player1 = {
   asset: PlayerAsset.TypeA,
@@ -112,10 +114,20 @@ const inventory = (
   return state;
 };
 
-const rootReducer = combineReducers<IGameState>({
-  board,
-  inventory,
-  profiles,
+const game = (state: IGameState, action: any): IGameState | null => {
+  if (!state) {
+    return null;
+  }
+  return {
+    board: board(state.board, action),
+    inventory: inventory(state.inventory, action),
+    profiles: profiles(state.profiles, action),
+  };
+};
+
+const rootReducer = combineReducers<IRootState>({
+  game,
+  session,
 });
 
 export default rootReducer;

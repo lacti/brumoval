@@ -51,3 +51,14 @@ export interface IGameState {
   board: IBoardState;
   inventory: IInventoryState;
 }
+
+export interface ISessionState {
+  name: string;
+  gameId: string;
+  clientId: string;
+}
+
+export interface IRootState {
+  session: ISessionState | null;
+  game: IGameState | null;
+}
