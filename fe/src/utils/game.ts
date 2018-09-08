@@ -28,7 +28,7 @@ const fromServerPlayer = (
     name: serverPlayer.name,
     asset: serverPlayer.asset,
     hp: serverPlayer.hp,
-    money: me ? serverPlayer.money : undefined,
+    money: serverPlayer.money,
     position: serverPlayer.position,
   };
 };
