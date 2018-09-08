@@ -143,8 +143,11 @@ app.post('/api/dice', (req, res) =>
       if (!player) {
         return false;
       }
-      player.position =
-        (player.position + nextInt(1, 6)) % game.board.slots.length;
+      const nextPosition = player.position + nextInt(1, 6);
+      if (nextPosition > game.board.slots.length) {
+        player.money += 1;
+      }
+      player.position = nextPosition % game.board.slots.length;
       return game;
     })(),
   ),

@@ -10,10 +10,7 @@ const Profile: React.StatelessComponent<{ profile: IPlayerState }> = ({
       <span style={{ width: `${(profile.hp / MAX_HP) * 100}%` }} />
     </span>
     <img src={asPlayerImage(profile.asset)} />
-    <span>
-      {profile.name}
-      {profile.money ? ` / ${profile.money}` : ''}
-    </span>
+    <span>{`${profile.name} / ${profile.money}`}</span>
   </div>
 );
 
