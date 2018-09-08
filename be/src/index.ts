@@ -1,6 +1,7 @@
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
 import * as express from 'express';
+import * as path from 'path';
 import * as R from 'rambda';
 import { $enum } from 'ts-enum-util';
 import { v4 as uuidv4 } from 'uuid';
@@ -17,12 +18,11 @@ import { nextElement, randomName } from './util';
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
+console.log(path.join(__dirname, '../../fe/build'));
+app.use(express.static(path.join(__dirname, '../../fe/build')));
 
 const games: { [gameId: string]: IGameState } = {};
 
-app.get('/', (req, res) => {
-  res.json('Hi, there');
-});
 app.post('/api/checkSession', (req, res) => {
   return res.json(
     (() => {

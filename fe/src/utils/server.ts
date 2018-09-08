@@ -1,9 +1,10 @@
 let serverBaseUrl =
   process.env.NODE_ENV === 'production'
-    ? `${window.location.protocol}://${window.location.host}`
+    ? `${window.location.protocol}//${window.location.host}`
     : `http://localhost:3001`;
 (async () => {
   try {
+    window.console.log(serverBaseUrl);
     await fetch(serverBaseUrl).then(r => r.text());
   } catch (_) {
     serverBaseUrl = `http://localhost:3001`;
