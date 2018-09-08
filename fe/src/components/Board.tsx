@@ -45,9 +45,9 @@ const Billboard: React.StatelessComponent<{ billboard: IPlayerState[] }> = ({
   window.console.log(billboard);
   return (
     <ul className="Billboard">
-      {billboard.map(player => (
-        <li key={player.id}>
-          <Rank player={player} />
+      {R.range(0, Math.min(10, billboard.length)).map(index => (
+        <li key={billboard[index].id}>
+          <Rank player={billboard[index]} />
         </li>
       ))}
     </ul>

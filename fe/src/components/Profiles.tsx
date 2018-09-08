@@ -19,7 +19,7 @@ export const Profiles: React.SFC<{ profiles: IProfilesState }> = ({
 }) => (
   <div className="Profiles">
     {profiles.me && <Profile profile={profiles.me} />}
-    {profiles.others.map(each => (
+    {profiles.others.filter(each => each.hp > 0).map(each => (
       <Profile key={each.id} profile={each} />
     ))}
     <div style={{ clear: 'both' }} />
