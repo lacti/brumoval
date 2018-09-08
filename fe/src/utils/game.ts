@@ -51,7 +51,9 @@ const toClientGame = (
     length: serverState.board.length,
     slots: serverState.board.slots.map(slot => ({
       index: slot.index,
-      players: players.filter(each => each.position === slot.index),
+      players: players.filter(
+        each => each.position === slot.index && each.hp > 0,
+      ),
     })),
     billboard: players
       .filter(each => each.hp <= 0)
@@ -61,7 +63,7 @@ const toClientGame = (
     board,
     profiles: {
       me,
-      others,
+      others: others.filter(each => each.hp > 0),
     },
     inventory,
   };
