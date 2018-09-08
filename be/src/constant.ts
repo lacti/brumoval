@@ -1,5 +1,5 @@
 export const BoardLength = 5;
-export const ReadyCount = 5;
+export const ReadyCount = 4;
 export const MAX_HP = 100;
 
 export const NAMES = [
