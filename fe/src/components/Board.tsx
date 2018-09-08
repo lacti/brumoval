@@ -1,6 +1,6 @@
 import * as R from 'rambda';
 import * as React from 'react';
-import { IBoardSlotState, IBoardState } from '../models/state';
+import { asPlayerImage, IBoardSlotState, IBoardState } from '../models/client';
 
 const Slot: React.StatelessComponent<{ slot: IBoardSlotState }> = ({
   slot,
@@ -10,8 +10,8 @@ const Slot: React.StatelessComponent<{ slot: IBoardSlotState }> = ({
       {slot.players.map(player => (
         <img
           className="Character"
-          key={player.name}
-          src={player.asset as any}
+          key={player.id}
+          src={asPlayerImage(player.asset)}
         />
       ))}
     </div>

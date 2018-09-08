@@ -2,7 +2,7 @@ import * as React from 'react';
 import './App.css';
 
 import Game from './components/Game';
-import { IGameState, ISessionState } from './models/state';
+import { IGameState } from './models/client';
 import { checkSession, issueSession } from './utils/session';
 import {
   readSessionFromLocalStorage,
@@ -10,6 +10,7 @@ import {
 } from './utils/storage';
 
 import * as sleep from 'then-sleep';
+import { ISessionState } from './models/server';
 import { isGameReady, retrieveGameState } from './utils/game';
 
 interface IAppStates {

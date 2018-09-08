@@ -2,28 +2,31 @@ import ImageOfPlayerTypeA from '../images/player/type-a.png';
 import ImageOfPlayerTypeB from '../images/player/type-b.png';
 import ImageOfPlayerTypeC from '../images/player/type-c.png';
 import ImageOfPlayerTypeD from '../images/player/type-d.png';
+import { ItemAsset, PlayerAsset } from './asset';
+import { IServerInventoryState } from './server';
 
-export enum ItemAsset {
-  BlackBean = 'black-bean.png',
-}
+export const asItemImage = (asset: ItemAsset) => {
+  switch (asset) {
+    case ItemAsset.BlackBean:
+      return 'black-bean.png';
+  }
+};
 
-export interface IItemState {
-  asset: ItemAsset;
-  name: string;
-}
-
-export interface IInventoryState {
-  items: IItemState[];
-}
-
-export enum PlayerAsset {
-  TypeA = ImageOfPlayerTypeA,
-  TypeB = ImageOfPlayerTypeB,
-  TypeC = ImageOfPlayerTypeC,
-  TypeD = ImageOfPlayerTypeD,
-}
+export const asPlayerImage = (asset: PlayerAsset) => {
+  switch (asset) {
+    case PlayerAsset.TypeA:
+      return ImageOfPlayerTypeA;
+    case PlayerAsset.TypeB:
+      return ImageOfPlayerTypeB;
+    case PlayerAsset.TypeC:
+      return ImageOfPlayerTypeC;
+    case PlayerAsset.TypeD:
+      return ImageOfPlayerTypeD;
+  }
+};
 
 export interface IPlayerState {
+  id: string;
   name: string;
   asset: PlayerAsset;
   hp: number;
@@ -49,15 +52,5 @@ export interface IProfilesState {
 export interface IGameState {
   profiles: IProfilesState;
   board: IBoardState;
-  inventory: IInventoryState;
-}
-
-export interface ISessionState {
-  gameId: string;
-  clientId: string;
-}
-
-export interface IRootState {
-  session: ISessionState | null;
-  game: IGameState | null;
+  inventory: IServerInventoryState;
 }

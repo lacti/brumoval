@@ -1,4 +1,4 @@
-import { ISessionState } from '../models/state';
+import { ISessionState } from '../models/server';
 import { server } from './server';
 
 export const checkSession = (session: ISessionState) => {

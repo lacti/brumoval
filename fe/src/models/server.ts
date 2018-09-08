@@ -35,7 +35,7 @@ export interface IServerGameState {
   board: IServerBoardState;
 }
 
-export interface IServerSessionState {
+export interface ISessionState {
   gameId: string;
   clientId: string;
 }

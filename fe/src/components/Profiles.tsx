@@ -1,6 +1,6 @@
 import * as React from 'react';
+import { asPlayerImage, IPlayerState, IProfilesState } from '../models/client';
 import { MAX_HP } from '../models/constants';
-import { IPlayerState, IProfilesState } from '../models/state';
 
 const Profile: React.StatelessComponent<{ profile: IPlayerState }> = ({
   profile,
@@ -9,7 +9,7 @@ const Profile: React.StatelessComponent<{ profile: IPlayerState }> = ({
     <span className="Hp">
       <span style={{ width: `${(profile.hp / MAX_HP) * 100}%` }} />
     </span>
-    <img src={profile.asset as any} />
+    <img src={asPlayerImage(profile.asset)} />
     <span>
       {profile.name}
       {profile.money ? ` / ${profile.money}` : ''}
@@ -23,7 +23,7 @@ export const Profiles: React.SFC<{ profiles: IProfilesState }> = ({
   <div className="Profiles">
     {profiles.me && <Profile profile={profiles.me} />}
     {profiles.others.map(each => (
-      <Profile key={each.name} profile={each} />
+      <Profile key={each.id} profile={each} />
     ))}
     <div style={{ clear: 'both' }} />
   </div>

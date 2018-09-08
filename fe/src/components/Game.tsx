@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { IGameState } from '../models/state';
+import { IGameState } from '../models/client';
 import { Board } from './Board';
 import { Inventory } from './Inventory';
 import { Profiles } from './Profiles';

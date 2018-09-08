@@ -1,15 +1,18 @@
 import * as React from 'react';
-import { IInventoryState, IItemState } from '../models/state';
+import { asItemImage } from '../models/client';
+import { IServerInventoryState, IServerItemState } from '../models/server';
 
-const Item: React.StatelessComponent<{ item: IItemState }> = ({ item }) => (
+const Item: React.StatelessComponent<{ item: IServerItemState }> = ({
+  item,
+}) => (
   <div>
-    <img src={item.asset} />
+    <img src={asItemImage(item.asset)} />
     <span>{item.name}</span>
   </div>
 );
 
 export const Inventory: React.StatelessComponent<{
-  inventory: IInventoryState;
+  inventory: IServerInventoryState;
 }> = ({ inventory }) => (
   <div>
     {inventory.items.map(each => (
