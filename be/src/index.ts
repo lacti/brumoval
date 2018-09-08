@@ -1,6 +1,7 @@
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
 import * as express from 'express';
+import * as fs from 'fs';
 import * as path from 'path';
 import * as R from 'rambda';
 import { $enum } from 'ts-enum-util';
@@ -25,7 +26,20 @@ const log = (...args: any[]) => {
     console.log(args);
   }
 };
-const games: { [gameId: string]: IGameState } = {};
+interface IGameMap {
+  [gameId: string]: IGameState;
+}
+const games: IGameMap = ((): IGameMap => {
+  setInterval(() => {
+    log(`Auto save`);
+    fs.writeFileSync(`db.json`, JSON.stringify(games), 'utf-8');
+  }, 10 * 1000);
+
+  if (fs.existsSync(`db.json`)) {
+    return JSON.parse(fs.readFileSync(`db.json`, 'utf-8')) as IGameMap;
+  }
+  return {};
+})();
 
 app.post('/api/checkSession', (req, res) =>
   res.json(
@@ -143,8 +157,17 @@ app.post('/api/dice', (req, res) =>
       if (!player) {
         return false;
       }
+      if (player.hp === 0) {
+        return game;
+      }
+      if (nextInt(1, 29) < 11) {
+        player.hp = Math.min(
+          MAX_HP,
+          Math.max(0, player.hp + (nextInt(1, 20) - 14)),
+        );
+      }
       const nextPosition = player.position + nextInt(1, 6);
-      if (nextPosition > game.board.slots.length) {
+      if (nextPosition >= game.board.slots.length) {
         player.money += 1;
       }
       player.position = nextPosition % game.board.slots.length;

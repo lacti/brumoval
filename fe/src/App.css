@@ -67,3 +67,18 @@ img {
   height: 24px;
   margin: 4px 4px 0px 4px;
 }
+
+.Billboard {
+  list-style: none;
+}
+.Billboard li {
+  vertical-align: middle;
+}
+.Status {
+  vertical-align: top;
+}
+
+* {
+  user-select: none;
+  outline: none;
+}

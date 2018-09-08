@@ -30,7 +30,7 @@ export interface IPlayerState {
   name: string;
   asset: PlayerAsset;
   hp: number;
-  money?: number;
+  money: number;
   position: number;
 }
 
@@ -42,10 +42,11 @@ export interface IBoardSlotState {
 export interface IBoardState {
   length: number;
   slots: IBoardSlotState[];
+  billboard: IPlayerState[];
 }
 
 export interface IProfilesState {
-  me?: IPlayerState;
+  me: IPlayerState;
   others: IPlayerState[];
 }
 

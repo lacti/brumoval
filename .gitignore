@@ -4,3 +4,4 @@ build/
 .build/
 *.swp
 yarn*.log*
+be/db.json

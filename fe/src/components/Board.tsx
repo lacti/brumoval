@@ -1,27 +1,63 @@
 import * as R from 'rambda';
 import * as React from 'react';
-import { asPlayerImage, IBoardSlotState, IBoardState } from '../models/client';
+import {
+  asPlayerImage,
+  IBoardSlotState,
+  IBoardState,
+  IPlayerState,
+} from '../models/client';
 
 const Slot: React.StatelessComponent<{ slot: IBoardSlotState }> = ({
   slot,
-}) => (
-  <div className="Slot">
-    <div className="Players">
-      {slot.players.map(player => (
-        <img
-          className="Character"
-          key={player.id}
-          src={asPlayerImage(player.asset)}
-        />
-      ))}
+}) => {
+  return (
+    <div className="Slot">
+      <div className="Players">
+        {slot.players.map(player => (
+          <img
+            className="Character"
+            key={player.id}
+            src={asPlayerImage(player.asset)}
+          />
+        ))}
+      </div>
     </div>
-  </div>
+  );
+};
+
+const Rank: React.StatelessComponent<{ player: IPlayerState }> = ({
+  player,
+}) => (
+  <React.Fragment>
+    <img
+      className="Character"
+      key={player.id}
+      src={asPlayerImage(player.asset)}
+    />
+    <span>{player.name}</span>
+    <span>({player.money})</span>
+  </React.Fragment>
 );
+
+const Billboard: React.StatelessComponent<{ billboard: IPlayerState[] }> = ({
+  billboard,
+}) => {
+  window.console.log(billboard);
+  return (
+    <ul className="Billboard">
+      {billboard.map(player => (
+        <li key={player.id}>
+          <Rank player={player} />
+        </li>
+      ))}
+    </ul>
+  );
+};
 
 export const Board: React.StatelessComponent<{ board: IBoardState }> = ({
   board,
 }) => {
-  const { slots, length } = board;
+  const { slots, length, billboard } = board;
   return (
     <table className="Board">
       <tbody>
@@ -35,11 +71,13 @@ export const Board: React.StatelessComponent<{ board: IBoardState }> = ({
         {R.range(0, length).map(row => (
           <tr key={`r${1 + row}`}>
             <td key={`r${1 + row}c0`}>
-              <Slot key={row} slot={slots[length * length - row - 2]} />
+              <Slot key={row} slot={slots[4 + 4 * length - 1 - row]} />
             </td>
-            {R.range(0, length).map(col => (
-              <td key={`r${1 + row}c${1 + col}`} />
-            ))}
+            {row === 0 && (
+              <td colSpan={length} rowSpan={length} className="Status">
+                <Billboard billboard={billboard} />
+              </td>
+            )}
             <td key={`r${1 + row}c${length + 1}`}>
               <Slot key={row} slot={slots[length + row + 2]} />
             </td>
