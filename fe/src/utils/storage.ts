@@ -1,4 +1,4 @@
-import { ISessionState } from '../store/state';
+import { ISessionState } from '../models/state';
 
 export const readSessionFromLocalStorage = (): ISessionState => {
   return {

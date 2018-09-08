@@ -53,7 +53,6 @@ export interface IGameState {
 }
 
 export interface ISessionState {
-  name: string;
   gameId: string;
   clientId: string;
 }

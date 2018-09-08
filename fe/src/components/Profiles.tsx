@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { MAX_HP } from '../models/constants';
-import { IPlayerState, IProfilesState } from '../store/state';
+import { IPlayerState, IProfilesState } from '../models/state';
 
 const Profile: React.StatelessComponent<{ profile: IPlayerState }> = ({
   profile,

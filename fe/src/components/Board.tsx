@@ -1,6 +1,6 @@
 import * as R from 'rambda';
 import * as React from 'react';
-import { IBoardSlotState, IBoardState } from '../store/state';
+import { IBoardSlotState, IBoardState } from '../models/state';
 
 const Slot: React.StatelessComponent<{ slot: IBoardSlotState }> = ({
   slot,

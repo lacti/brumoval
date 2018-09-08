@@ -1,55 +1,46 @@
 import * as React from 'react';
-import { connect, Provider } from 'react-redux';
 import './App.css';
 
-import { AnyAction, bindActionCreators, Dispatch, Store } from 'redux';
-import * as sessionActions from './actions/session';
 import Game from './components/Game';
-import { IRootState } from './store/state';
+import { IGameState, ISessionState } from './models/state';
 import { checkSession, issueSession } from './utils/session';
 import {
   readSessionFromLocalStorage,
   storeSessionToLocalStorage,
 } from './utils/storage';
 
-const mapStateToProps = (state: IRootState) => state;
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  actions: bindActionCreators({ ...sessionActions }, dispatch),
-});
+import * as sleep from 'then-sleep';
+import { isGameReady, retrieveGameState } from './utils/game';
 
-interface IAppProps
-  extends ReturnType<typeof mapDispatchToProps>,
-    ReturnType<typeof mapStateToProps> {
-  store: Store<IRootState, any>;
+interface IAppStates {
+  session?: ISessionState;
+  game?: IGameState;
 }
 
-class App extends React.Component<IAppProps> {
-  constructor(props: IAppProps) {
+class App extends React.Component<{}, IAppStates> {
+  constructor(props: {}) {
     super(props);
+    this.state = {};
   }
   public componentWillMount() {
-    const { session } = this.props;
+    const { session } = this.state;
     if (!session) {
       this.initializeSession();
     }
   }
   public render() {
-    const { store, game } = this.props;
+    const { game } = this.state;
     if (game) {
       return (
-        <Provider store={store}>
-          <div className="App">
-            <Game />
-          </div>
-        </Provider>
+        <div className="App">
+          <Game game={game} />
+        </div>
       );
     }
     return (
-      <Provider store={store}>
-        <div className="App">
-          <p>Now loading...</p>
-        </div>
-      </Provider>
+      <div className="App">
+        <p>Now loading...</p>
+      </div>
     );
   }
 
@@ -58,8 +49,23 @@ class App extends React.Component<IAppProps> {
     if (!(await checkSession(oldSession))) {
       const newSession = await issueSession();
       storeSessionToLocalStorage(newSession);
+      window.console.log(newSession);
+      this.setState({
+        session: newSession,
+      });
     }
+    this.checkGameState();
+  };
+
+  private checkGameState = async () => {
+    while (!isGameReady()) {
+      await sleep(1000);
+    }
+    const game = await retrieveGameState();
+    this.setState({
+      game,
+    });
   };
 }
 
-export default connect(mapStateToProps)(App);
+export default App;

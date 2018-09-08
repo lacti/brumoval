@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IInventoryState, IItemState } from '../store/state';
+import { IInventoryState, IItemState } from '../models/state';
 
 const Item: React.StatelessComponent<{ item: IItemState }> = ({ item }) => (
   <div>

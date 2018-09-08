@@ -1,25 +1,16 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
 
-import { IRootState } from '../store/state';
+import { IGameState } from '../models/state';
 import { Board } from './Board';
 import { Inventory } from './Inventory';
 import { Profiles } from './Profiles';
 
-const mapStateToProps = (state: IRootState) => state.game!;
-
-interface IAppProps extends ReturnType<typeof mapStateToProps> {}
-
-const Game: React.StatelessComponent<IAppProps> = ({
-  profiles,
-  board,
-  inventory,
-}) => (
+const Game: React.StatelessComponent<{ game: IGameState }> = ({ game }) => (
   <React.Fragment>
-    <Profiles profiles={profiles} />
-    <Board board={board} />
-    <Inventory inventory={inventory} />
+    <Profiles profiles={game.profiles} />
+    <Board board={game.board} />
+    <Inventory inventory={game.inventory} />
   </React.Fragment>
 );
 
-export default connect(mapStateToProps)(Game);
+export default Game;
