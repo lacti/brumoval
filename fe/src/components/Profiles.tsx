@@ -1,3 +1,4 @@
+import * as R from 'rambda';
 import * as React from 'react';
 import { asPlayerImage, IPlayerState, IProfilesState } from '../models/client';
 import { MAX_HP } from '../models/constants';
@@ -19,9 +20,12 @@ export const Profiles: React.SFC<{ profiles: IProfilesState }> = ({
 }) => (
   <div className="Profiles">
     {profiles.me && <Profile profile={profiles.me} />}
-    {profiles.others.filter(each => each.hp > 0).map(each => (
-      <Profile key={each.id} profile={each} />
-    ))}
+    {R.range(0, Math.min(13, profiles.others.length))
+      .map(index => profiles.others[index])
+      .filter(each => each.hp > 0)
+      .map(each => (
+        <Profile key={each.id} profile={each} />
+      ))}
     <div style={{ clear: 'both' }} />
   </div>
 );
