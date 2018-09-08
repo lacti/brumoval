@@ -11,7 +11,7 @@ import {
 
 import * as sleep from 'then-sleep';
 import { ISessionState } from './models/server';
-import { isGameReady, retrieveGameState } from './utils/game';
+import { doDice, retrieveGameState } from './utils/game';
 
 interface IAppStates {
   session?: ISessionState;
@@ -59,13 +59,20 @@ class App extends React.Component<{}, IAppStates> {
   };
 
   private checkGameState = async () => {
-    while (!isGameReady()) {
+    document.addEventListener('click', async () => {
+      const game = await doDice();
+      this.setState({
+        game,
+      });
+    });
+
+    while (true) {
+      const game = await retrieveGameState();
+      this.setState({
+        game,
+      });
       await sleep(1000);
     }
-    const game = await retrieveGameState();
-    this.setState({
-      game,
-    });
   };
 }
 

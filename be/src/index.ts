@@ -13,21 +13,25 @@ import {
   ISessionState,
   PlayerAsset,
 } from './state';
-import { nextElement, randomName } from './util';
+import { nextElement, nextInt, randomName } from './util';
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
-console.log(path.join(__dirname, '../../fe/build'));
 app.use(express.static(path.join(__dirname, '../../fe/build')));
 
+const log = (...args: any[]) => {
+  if (process.env.DEBUG) {
+    console.log(args);
+  }
+};
 const games: { [gameId: string]: IGameState } = {};
 
-app.post('/api/checkSession', (req, res) => {
-  return res.json(
+app.post('/api/checkSession', (req, res) =>
+  res.json(
     (() => {
       const session = req.body as ISessionState;
-      console.log(session);
+      log(session);
       if (!session || !session.gameId) {
         return false;
       }
@@ -36,8 +40,8 @@ app.post('/api/checkSession', (req, res) => {
         !!games[session.gameId].players[session.clientId]
       );
     })(),
-  );
-});
+  ),
+);
 const findWaitingGame = () => {
   for (const game of Object.values(games)) {
     if (!game.running) {
@@ -75,8 +79,8 @@ const newPlayer = () => {
   };
   return player;
 };
-app.post('/api/issueSession', (req, res) => {
-  return res.json(
+app.post('/api/issueSession', (req, res) =>
+  res.json(
     (() => {
       const game = findWaitingGame() || newGame();
       const player = newPlayer();
@@ -86,13 +90,13 @@ app.post('/api/issueSession', (req, res) => {
         clientId: player.id,
       };
     })(),
-  );
-});
-app.post('/api/ready', (req, res) => {
-  return res.json(
+  ),
+);
+app.post('/api/ready', (req, res) =>
+  res.json(
     (() => {
       const session = req.body as ISessionState;
-      console.log(session);
+      log(session);
       if (!session || !session.gameId) {
         return false;
       }
@@ -103,13 +107,13 @@ app.post('/api/ready', (req, res) => {
       }
       return Object.keys(game.players).length === ReadyCount;
     })(),
-  );
-});
-app.post('/api/game', (req, res) => {
-  return res.json(
+  ),
+);
+app.post('/api/game', (req, res) =>
+  res.json(
     (() => {
       const session = req.body as ISessionState;
-      console.log(session);
+      log(session);
       if (!session || !session.gameId) {
         return false;
       }
@@ -120,8 +124,31 @@ app.post('/api/game', (req, res) => {
       }
       return game;
     })(),
-  );
-});
+  ),
+);
+app.post('/api/dice', (req, res) =>
+  res.json(
+    (() => {
+      const session = req.body as ISessionState;
+      log(session);
+      if (!session || !session.gameId) {
+        return false;
+      }
+
+      const game = games[session.gameId];
+      if (!game) {
+        return false;
+      }
+      const player = game.players[session.clientId];
+      if (!player) {
+        return false;
+      }
+      player.position =
+        (player.position + nextInt(1, 6)) % game.board.slots.length;
+      return game;
+    })(),
+  ),
+);
 app.listen(3001, () => {
   console.log('hello');
 });

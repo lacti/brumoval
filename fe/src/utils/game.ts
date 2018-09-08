@@ -1,5 +1,9 @@
 import { IBoardState, IGameState, IPlayerState } from '../models/client';
-import { IServerGameState, IServerPlayerState } from '../models/server';
+import {
+  IServerGameState,
+  IServerPlayerState,
+  ISessionState,
+} from '../models/server';
 import { server } from './server';
 import { readSessionFromLocalStorage } from './storage';
 
@@ -29,12 +33,10 @@ const fromServerPlayer = (
   };
 };
 
-export const retrieveGameState = async (): Promise<IGameState> => {
-  const session = readSessionFromLocalStorage();
-  const serverState = await server<IServerGameState>('/game', {
-    gameId: session.gameId,
-    clientId: session.clientId,
-  });
+const toClientGame = (
+  session: ISessionState,
+  serverState: IServerGameState,
+): IGameState => {
   const me = fromServerPlayer(serverState.players[session.clientId], true);
   const others = Object.values(serverState.players)
     .filter((each: IServerPlayerState) => each.id !== session.clientId)
@@ -48,7 +50,6 @@ export const retrieveGameState = async (): Promise<IGameState> => {
       players: players.filter(each => each.position === slot.index),
     })),
   };
-  window.console.log(players);
   return {
     board,
     profiles: {
@@ -57,4 +58,25 @@ export const retrieveGameState = async (): Promise<IGameState> => {
     },
     inventory,
   };
+};
+
+export const retrieveGameState = async (): Promise<IGameState> => {
+  const session = readSessionFromLocalStorage();
+  const serverState = await server<IServerGameState>('/game', {
+    gameId: session.gameId,
+    clientId: session.clientId,
+  });
+  return toClientGame(session, serverState);
+};
+
+export const doDice = async () => {
+  const session = readSessionFromLocalStorage();
+  const serverState = await server<boolean | IServerGameState>('/dice', {
+    gameId: session.gameId,
+    clientId: session.clientId,
+  });
+  if (typeof serverState === 'boolean') {
+    throw new Error('Go away!');
+  }
+  return toClientGame(session, serverState);
 };
